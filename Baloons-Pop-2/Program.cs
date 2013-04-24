@@ -12,6 +12,7 @@ namespace BalloonsPops
 		{
 			igra.Start();
             //Ferdi - for test commit
+			// Ivan - test redy
 		}
 	}
 }
