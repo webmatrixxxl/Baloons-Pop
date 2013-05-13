@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BalloonsPops
+namespace BaloonsPop
 {
 	public static class RandomGenerator
 	{

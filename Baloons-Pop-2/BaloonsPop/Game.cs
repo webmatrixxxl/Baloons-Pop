@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace BalloonsPops
+namespace BaloonsPop
 {
     public class Game
     {
@@ -17,7 +17,7 @@ namespace BalloonsPops
 
         public static string[,] gameMatrix;
         public static StringBuilder userInput = new StringBuilder();
-        private static SortedDictionary<int, string> statistics = new SortedDictionary<int, string>();
+        private static SortedDictionary<int, string> scoreBoard = new SortedDictionary<int, string>();
 
         public static void Start()
         {
@@ -27,12 +27,12 @@ namespace BalloonsPops
             userMoves = 0;
 
             clearedCells = 0;
-            gameMatrix = CreateTable(ROWS_COUNT, COLS_COUNT);
-            PrintTable();
+            gameMatrix = CreateGameMatrix(ROWS_COUNT, COLS_COUNT);
+            ConsoleRenderer.PrintGameMatrix(gameMatrix);
             GameLogic(userInput);
         }
 
-        public static string[,] CreateTable(int rows, int cols)
+        public static string[,] CreateGameMatrix(int rows, int cols)
         {
             string[,] matrix = new string[rows, cols];
 
@@ -47,33 +47,7 @@ namespace BalloonsPops
             return matrix;
         }
 
-        public static string GameMatrixToString(string[,] matrix)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            builder.AppendLine("    0 1 2 3 4 5 6 7 8 9");
-            builder.AppendLine("   ---------------------");
-
-            for (int row = 0; row < matrix.GetLength(0); row++)
-            {
-                builder.AppendFormat("{0} | ", row);
-
-                for (int col = 0; col < matrix.GetLength(1); col++)
-                {
-                    builder.AppendFormat("{0} ", matrix[row, col]);
-                }
-
-                builder.AppendLine("| ");
-            }
-
-            builder.AppendLine("   ---------------------");
-            return builder.ToString();
-        }
-
-        public static void PrintTable()
-        {
-            Console.WriteLine(GameMatrixToString(gameMatrix));
-        }
+        
 
         public static void GameLogic(StringBuilder userInput)
         {
@@ -105,10 +79,7 @@ namespace BalloonsPops
             GameLogic(userInput);
         }
 
-        private static void ShowStatistics()
-        {
-            PrintTheScoreBoard();
-        }
+        
 
         private static void Exit()
         {
@@ -136,29 +107,14 @@ namespace BalloonsPops
                 Console.Write("Congratulations! You popped all balloons in " + userMoves + " moves." +
                               "\r\nPlease enter your name for the top scoreboard:");
                 userInput.Append(Console.ReadLine());
-                statistics.Add(userMoves, userInput.ToString());
-                PrintTheScoreBoard();
+                scoreBoard.Add(userMoves, userInput.ToString());
+                ConsoleRenderer.PrintStatistics(scoreBoard);
                 userInput.Clear();
                 Start();
             }
         }
 
-        private static void PrintTheScoreBoard()
-        {
-            int p = 0;
-
-            Console.WriteLine("Scoreboard:");
-            foreach (KeyValuePair<int, string> s in statistics)
-            {
-                if (p == 4)
-                    break;
-                else
-                {
-                    p++;
-                    Console.WriteLine("{0}. {1} --> {2} moves", p, s.Value, s.Key);
-                }
-            }
-        }
+       
 
         private static void PlayGame()
         {
@@ -174,7 +130,7 @@ namespace BalloonsPops
                 InvalidInput();
             if (userInput.ToString() == "top")
             {
-                ShowStatistics();
+                ConsoleRenderer.PrintStatistics(scoreBoard);
                 userInput.Clear();
                 goto Play;
             }
@@ -205,7 +161,7 @@ namespace BalloonsPops
             else
                 InvalidMove();
             ClearEmptyCells();
-            PrintTable();
+            ConsoleRenderer.PrintGameMatrix(gameMatrix);
         }
 
         private static void RemoveAllBaloons(int i, int j, string activeCell)
