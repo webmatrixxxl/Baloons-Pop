@@ -1,0 +1,6 @@
+C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe.config
+C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe
+C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.pdb
+C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.csprojResolveAssemblyReference.cache
+C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.exe
+C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.pdb
