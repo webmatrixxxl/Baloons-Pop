@@ -47,8 +47,6 @@ namespace BaloonsPop
             return matrix;
         }
 
-        
-
         public static void GameLogic(StringBuilder userInput)
         {
             PlayGame();
@@ -60,9 +58,13 @@ namespace BaloonsPop
         private static bool IsLegalMove(int i, int j)
         {
             if ((i < 0) || (j < 0) || (j > COLS_COUNT - 1) || (i > ROWS_COUNT - 1))
+            {
                 return false;
+            }
             else
+            {
                 return (gameMatrix[i, j] != ".");
+            }
         }
 
         private static void InvalidInput()
@@ -78,8 +80,6 @@ namespace BaloonsPop
             userInput.Clear();
             GameLogic(userInput);
         }
-
-        
 
         private static void Exit()
         {
@@ -114,8 +114,6 @@ namespace BaloonsPop
             }
         }
 
-       
-
         private static void PlayGame()
         {
             int i = -1;
@@ -127,23 +125,31 @@ namespace BaloonsPop
             string hop = userInput.ToString();
 
             if (userInput.ToString() == "")
+            {
                 InvalidInput();
+            }
+
             if (userInput.ToString() == "top")
             {
                 ConsoleRenderer.PrintStatistics(scoreBoard);
                 userInput.Clear();
                 goto Play;
             }
+
             if (userInput.ToString() == "restart")
             {
                 userInput.Clear();
                 Restart();
             }
+
             if (userInput.ToString() == "exit")
+            {
                 Exit();
+            }
 
             string activeCell;
             userInput.Replace(" ", "");
+
             try
             {
                 i = Int32.Parse(userInput.ToString()) / 10;
@@ -153,13 +159,17 @@ namespace BaloonsPop
             {
                 InvalidInput();
             }
+
             if (IsLegalMove(i, j))
             {
                 activeCell = gameMatrix[i, j];
                 RemoveAllBaloons(i, j, activeCell);
             }
             else
+            {
                 InvalidMove();
+            }
+
             ClearEmptyCells();
             ConsoleRenderer.PrintGameMatrix(gameMatrix);
         }
@@ -183,6 +193,7 @@ namespace BaloonsPop
             {
                 cellsLeft -= clearedCells;
                 clearedCells = 0;
+
                 return;
             }
         }
@@ -192,6 +203,7 @@ namespace BaloonsPop
             int i;
             int j;
             Queue<string> temp = new Queue<string>();
+
             for (j = COLS_COUNT - 1; j >= 0; j--)
             {
                 for (i = ROWS_COUNT - 1; i >= 0; i--)
@@ -202,12 +214,15 @@ namespace BaloonsPop
                         gameMatrix[i, j] = ".";
                     }
                 }
+
                 i = 4;
+
                 while (temp.Count > 0)
                 {
                     gameMatrix[i, j] = temp.Dequeue();
                     i--;
                 }
+
                 temp.Clear();
             }
         }

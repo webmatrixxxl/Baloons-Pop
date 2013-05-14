@@ -8,7 +8,7 @@ namespace BaloonsPop
 {
     class ConsoleRenderer
     {
-        public static void PrintGameMatrix(string [,] gameMatrix)
+        public static void PrintGameMatrix(string[,] gameMatrix)
         {
             Console.WriteLine(GameMatrixToString(gameMatrix));
         }
@@ -18,10 +18,13 @@ namespace BaloonsPop
             int position = 0;
 
             Console.WriteLine("Scoreboard:");
+
             foreach (KeyValuePair<int, string> score in scoreBoard)
             {
                 if (position == 4)
+                {
                     break;
+                }
                 else
                 {
                     position++;
@@ -33,7 +36,6 @@ namespace BaloonsPop
         private static string GameMatrixToString(string[,] matrix)
         {
             StringBuilder builder = new StringBuilder();
-
             builder.AppendLine("    0 1 2 3 4 5 6 7 8 9");
             builder.AppendLine("   ---------------------");
 
@@ -52,6 +54,5 @@ namespace BaloonsPop
             builder.AppendLine("   ---------------------");
             return builder.ToString();
         }
-
     }
 }
