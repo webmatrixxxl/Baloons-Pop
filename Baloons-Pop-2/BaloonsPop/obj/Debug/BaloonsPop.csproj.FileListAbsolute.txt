@@ -10,3 +10,9 @@ C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Deb
 C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.csprojResolveAssemblyReference.cache
 C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.exe
 C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.pdb
+D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe.config
+D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe
+D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.pdb
+D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.csprojResolveAssemblyReference.cache
+D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.exe
+D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.pdb

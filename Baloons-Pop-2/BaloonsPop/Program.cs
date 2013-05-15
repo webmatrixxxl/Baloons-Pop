@@ -6,7 +6,8 @@ namespace BaloonsPop
     {
         static void Main()
         {
-            Game.Start();
+            Game game = new Game();
+            game.Start();
         }
     }
 }
