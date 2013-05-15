@@ -56,15 +56,15 @@ namespace BaloonsPop
             GameLogic(userInput);
         }
 
-        private bool IsLegalMove(int i, int j)
+        private bool IsLegalMove(int row, int col)
         {
-            if ((i < 0) || (j < 0) || (j > COLS_COUNT - 1) || (i > ROWS_COUNT - 1))
+            if ((row < 0) || (col < 0) || (col > COLS_COUNT - 1) || (row > ROWS_COUNT - 1))
             {
                 return false;
             }
             else
             {
-                return (gameMatrix[i, j] != ".");
+                return (gameMatrix[row, col] != ".");
             }
         }
 
@@ -125,7 +125,7 @@ namespace BaloonsPop
 
             string hop = userInput.ToString();
 
-            if (userInput.ToString() == "")
+            if (userInput.ToString() == string.Empty)
             {
                 InvalidInput();
             }
@@ -149,7 +149,7 @@ namespace BaloonsPop
             }
 
             string activeCell;
-            userInput.Replace(" ", "");
+            userInput.Replace(" ", string.Empty);
 
             try
             {
@@ -175,20 +175,20 @@ namespace BaloonsPop
             ConsoleRenderer.PrintGameMatrix(gameMatrix);
         }
 
-        private void RemoveAllBaloons(int i, int j, string activeCell)
+        private void RemoveAllBaloons(int row, int col, string activeCell)
         {
-            if ((i >= 0) && (i <= 4) && (j <= 9) && (j >= 0) && (gameMatrix[i, j] == activeCell))
+            if ((row >= 0) && (row <= 4) && (col <= 9) && (col >= 0) && (gameMatrix[row, col] == activeCell))
             {
-                gameMatrix[i, j] = ".";
+                gameMatrix[row, col] = ".";
                 clearedCells++;
                 //Up
-                RemoveAllBaloons(i - 1, j, activeCell);
+                RemoveAllBaloons(row - 1, col, activeCell);
                 //Down
-                RemoveAllBaloons(i + 1, j, activeCell);
+                RemoveAllBaloons(row + 1, col, activeCell);
                 //Left
-                RemoveAllBaloons(i, j + 1, activeCell);
+                RemoveAllBaloons(row, col + 1, activeCell);
                 //Right
-                RemoveAllBaloons(i, j - 1, activeCell);
+                RemoveAllBaloons(row, col - 1, activeCell);
             }
             else
             {
@@ -201,30 +201,30 @@ namespace BaloonsPop
 
         private void ClearEmptyCells()
         {
-            int i;
-            int j;
-            Queue<string> temp = new Queue<string>();
+            int row;
+            int col;
+            Queue<string> collumnFallDown = new Queue<string>();
 
-            for (j = COLS_COUNT - 1; j >= 0; j--)
+            for (col = COLS_COUNT - 1; col >= 0; col--)
             {
-                for (i = ROWS_COUNT - 1; i >= 0; i--)
+                for (row = ROWS_COUNT - 1; row >= 0; row--)
                 {
-                    if (gameMatrix[i, j] != ".")
+                    if (gameMatrix[row, col] != ".")
                     {
-                        temp.Enqueue(gameMatrix[i, j]);
-                        gameMatrix[i, j] = ".";
+                        collumnFallDown.Enqueue(gameMatrix[row, col]);
+                        gameMatrix[row, col] = ".";
                     }
                 }
 
-                i = 4;
+                row = ROWS_COUNT - 1;
 
-                while (temp.Count > 0)
+                while (collumnFallDown.Count > 0)
                 {
-                    gameMatrix[i, j] = temp.Dequeue();
-                    i--;
+                    gameMatrix[row, col] = collumnFallDown.Dequeue();
+                    row--;
                 }
 
-                temp.Clear();
+                collumnFallDown.Clear();
             }
         }
 
