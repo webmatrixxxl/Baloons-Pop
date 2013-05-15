@@ -13,6 +13,12 @@ namespace BaloonsPop
             Console.WriteLine(GameMatrixToString(gameMatrix));
         }
 
+        public static void PrintGreetingMessage()
+        {
+            Console.WriteLine("Welcome to “Balloons Pops” game. Please try to pop the balloons. Use 'top' to view the " +
+                              "top scoreboard, 'restart' to start a new game and 'exit' to quit the game.");
+        }
+
         public static void PrintStatistics(SortedDictionary<int, string> scoreBoard)
         {
             int position = 0;

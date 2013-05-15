@@ -15,22 +15,14 @@ namespace BaloonsPop
         private int userMoves = 0;
         private int clearedCells = 0;
 
-        public string[,] gameMatrix;
-        public StringBuilder userInput = new StringBuilder();
+        private string[,] gameMatrix;
+        private StringBuilder userInput = new StringBuilder();
         private Statistics stats;
 
         public void Start()
         {
-            Console.WriteLine("Welcome to “Balloons Pops” game. Please try to pop the balloons. Use 'top' to view the " +
-                              "top scoreboard, 'restart' to start a new game and 'exit' to quit the game.");
-            cellsLeft = ROWS_COUNT * COLS_COUNT;
-            stats = new Statistics();
-            userMoves = 0;
-
-            clearedCells = 0;
-            gameMatrix = CreateGameMatrix(ROWS_COUNT, COLS_COUNT);
-            ConsoleRenderer.PrintGameMatrix(gameMatrix);
-            GameLogic(userInput);
+            Reset();
+            Run();
         }
 
         public string[,] CreateGameMatrix(int rows, int cols)
@@ -48,17 +40,9 @@ namespace BaloonsPop
             return matrix;
         }
 
-        public void GameLogic(StringBuilder userInput)
-        {
-            PlayGame();
-            userMoves++;
-            userInput.Clear();
-            GameLogic(userInput);
-        }
-
         private bool IsLegalMove(int row, int col)
         {
-            if ((row < 0) || (col < 0) || (col > COLS_COUNT - 1) || (row > ROWS_COUNT - 1))
+            if ((row < 0) || (row > ROWS_COUNT - 1) || (col < 0) || (col > COLS_COUNT - 1))
             {
                 return false;
             }
@@ -72,14 +56,12 @@ namespace BaloonsPop
         {
             Console.WriteLine("Invalid move or command");
             userInput.Clear();
-            GameLogic(userInput);
         }
 
         private void InvalidMove()
         {
             Console.WriteLine("Illegal move: cannot pop missing balloon!");
             userInput.Clear();
-            GameLogic(userInput);
         }
 
         private void Exit()
@@ -91,9 +73,16 @@ namespace BaloonsPop
             Environment.Exit(0);
         }
 
-        private void Restart()
+        private void Reset()
         {
-            Start();
+            cellsLeft = ROWS_COUNT * COLS_COUNT;
+            stats = new Statistics();
+            userMoves = 0;
+            clearedCells = 0;
+            gameMatrix = CreateGameMatrix(ROWS_COUNT, COLS_COUNT);
+            userInput.Clear();
+            ConsoleRenderer.PrintGreetingMessage();
+            ConsoleRenderer.PrintGameMatrix(gameMatrix);
         }
 
         private void ReadTheIput()
@@ -115,64 +104,65 @@ namespace BaloonsPop
             }
         }
 
-        private void PlayGame()
+        private void Run()
         {
-            int i = -1;
-            int j = -1;
+            int row = -1;
+            int col = -1;
 
-        Play:
-            ReadTheIput();
-
-            string hop = userInput.ToString();
-
-            if (userInput.ToString() == string.Empty)
-            {
-                InvalidInput();
-            }
-
-            if (userInput.ToString() == "top")
-            {
-                Console.WriteLine(stats.ToString());
-                userInput.Clear();
-                goto Play;
-            }
-
-            if (userInput.ToString() == "restart")
+            while (true)
             {
                 userInput.Clear();
-                Restart();
-            }
+                ReadTheIput();
 
-            if (userInput.ToString() == "exit")
-            {
-                Exit();
-            }
+                string userInputString = userInput.ToString();
 
-            string activeCell;
-            userInput.Replace(" ", string.Empty);
+                if (userInputString == string.Empty)
+                {
+                    InvalidInput();
+                }
+                else if (userInputString == "top")
+                {
+                    Console.WriteLine(stats.ToString());
+                }
+                else if (userInputString == "restart")
+                {
+                    Reset();
+                }
+                else if (userInputString == "exit")
+                {
+                    Exit();
+                }
+                else
+                {
+                    string activeCell;
+                    userInput.Replace(" ", string.Empty);
 
-            try
-            {
-                i = Int32.Parse(userInput.ToString()) / 10;
-                j = Int32.Parse(userInput.ToString()) % 10;
-            }
-            catch (Exception)
-            {
-                InvalidInput();
-            }
+                    try
+                    {
+                        row = Int32.Parse(userInput.ToString()) / 10;
+                        col = Int32.Parse(userInput.ToString()) % 10;
+                    }
+                    catch (FormatException)
+                    {
+                        InvalidInput();
+                        continue;
+                    }
 
-            if (IsLegalMove(i, j))
-            {
-                activeCell = gameMatrix[i, j];
-                RemoveAllBaloons(i, j, activeCell);
-            }
-            else
-            {
-                InvalidMove();
-            }
+                    if (IsLegalMove(row, col))
+                    {
+                        activeCell = gameMatrix[row, col];
+                        RemoveAllBaloons(row, col, activeCell);
+                        userMoves++;
+                    }
+                    else
+                    {
+                        InvalidMove();
+                    }
 
-            ClearEmptyCells();
-            ConsoleRenderer.PrintGameMatrix(gameMatrix);
+                    ClearEmptyCells();
+                    ConsoleRenderer.PrintGameMatrix(gameMatrix);
+                }
+            }
         }
 
         private void RemoveAllBaloons(int row, int col, string activeCell)
