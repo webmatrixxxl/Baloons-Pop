@@ -19,26 +19,6 @@ namespace BaloonsPop
                               "top scoreboard, 'restart' to start a new game and 'exit' to quit the game.");
         }
 
-        public static void PrintStatistics(SortedDictionary<int, string> scoreBoard)
-        {
-            int position = 0;
-
-            Console.WriteLine("Scoreboard:");
-
-            foreach (KeyValuePair<int, string> score in scoreBoard)
-            {
-                if (position == 4)
-                {
-                    break;
-                }
-                else
-                {
-                    position++;
-                    Console.WriteLine("{0}. {1} --> {2} moves", position, score.Value, score.Key);
-                }
-            }
-        }
-
         private static string GameMatrixToString(string[,] matrix)
         {
             StringBuilder builder = new StringBuilder();

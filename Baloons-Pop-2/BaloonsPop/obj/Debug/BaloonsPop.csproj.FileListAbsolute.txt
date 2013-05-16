@@ -1,15 +1,3 @@
-C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe.config
-C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe
-C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.pdb
-C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.csprojResolveAssemblyReference.cache
-C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.exe
-C:\Users\Ferdi\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.pdb
-C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe.config
-C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe
-C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.pdb
-C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.csprojResolveAssemblyReference.cache
-C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.exe
-C:\Users\webma_000\Documents\GitHub\Baloons-Pop\Baloons-Pop-2\BaloonsPop\obj\Debug\BaloonsPop.pdb
 D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe.config
 D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.exe
 D:\src\Baloons-Pop\Baloons-Pop-2\BaloonsPop\bin\Debug\BaloonsPop.pdb

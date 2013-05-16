@@ -16,7 +16,6 @@ namespace BaloonsPop
         private int clearedCells = 0;
 
         private string[,] gameMatrix;
-        private StringBuilder userInput = new StringBuilder();
         private Statistics stats;
 
         public void Start()
@@ -40,28 +39,14 @@ namespace BaloonsPop
             return matrix;
         }
 
-        private bool IsLegalMove(int row, int col)
-        {
-            if ((row < 0) || (row > ROWS_COUNT - 1) || (col < 0) || (col > COLS_COUNT - 1))
-            {
-                return false;
-            }
-            else
-            {
-                return (gameMatrix[row, col] != ".");
-            }
-        }
-
         private void InvalidInput()
         {
             Console.WriteLine("Invalid move or command");
-            userInput.Clear();
         }
 
         private void InvalidMove()
         {
             Console.WriteLine("Illegal move: cannot pop missing balloon!");
-            userInput.Clear();
         }
 
         private void Exit()
@@ -80,41 +65,47 @@ namespace BaloonsPop
             userMoves = 0;
             clearedCells = 0;
             gameMatrix = CreateGameMatrix(ROWS_COUNT, COLS_COUNT);
-            userInput.Clear();
+            //userInput.Clear();
             ConsoleRenderer.PrintGreetingMessage();
             ConsoleRenderer.PrintGameMatrix(gameMatrix);
         }
 
-        private void ReadTheIput()
+        private string ReadInput(string message)
         {
-            if (!IsFinished())
-            {
-                Console.Write("Enter a row and column: ");
-                userInput.Append(Console.ReadLine());
-            }
-            else
-            {
-                Console.Write("Congratulations! You popped all balloons in " + userMoves + " moves." +
-                              "\r\nPlease enter your name for the top scoreboard:");
-                userInput.Append(Console.ReadLine());
-                stats.AddPlayer(userInput.ToString(), userMoves);
-                Console.WriteLine(stats.ToString());
-                userInput.Clear();
-                Start();
-            }
+            Console.Write(message);
+            string input = Console.ReadLine();
+            return input;
+        }
+
+        private Cell ParseInputString(string input)
+        {
+            Cell cell = new Cell();
+            string[] coordinates = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            cell.Row = int.Parse(coordinates[0]);
+            cell.Col = int.Parse(coordinates[1]);
+
+            return cell;
         }
 
         private void Run()
         {
-            int row = -1;
-            int col = -1;
-
             while (true)
             {
-                userInput.Clear();
-                ReadTheIput();
+                string userInputString;
 
-                string userInputString = userInput.ToString();
+                if (cellsLeft != 0)
+                {
+                    userInputString = ReadInput("Enter a row and column: ");
+                }
+                else
+                {
+                    userInputString = ReadInput("Congratulations! You popped all balloons in " + userMoves + " moves." +
+                              "\r\nPlease enter your name for the top scoreboard:");
+                    stats.AddPlayer(userInputString, userMoves);
+                    Console.WriteLine(stats.ToString());
+                    Start();
+                }
 
                 if (userInputString == string.Empty)
                 {
@@ -134,13 +125,15 @@ namespace BaloonsPop
                 }
                 else
                 {
-                    string activeCell;
-                    userInput.Replace(" ", string.Empty);
-
+                    Cell cell = new Cell();
                     try
                     {
-                        row = Int32.Parse(userInput.ToString()) / 10;
-                        col = Int32.Parse(userInput.ToString()) % 10;
+                        cell = ParseInputString(userInputString);
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        InvalidInput();
+                        continue;
                     }
                     catch (FormatException)
                     {
@@ -148,16 +141,23 @@ namespace BaloonsPop
                         continue;
                     }
 
-                    if (IsLegalMove(row, col))
-                    {
-                        activeCell = gameMatrix[row, col];
-                        RemoveAllBaloons(row, col, activeCell);
-                        userMoves++;
-                    }
-                    else
+                    if (cell.Row < 0 || cell.Row > ROWS_COUNT - 1 ||
+                        cell.Col < 0 || cell.Col > COLS_COUNT - 1)
                     {
                         InvalidMove();
+                        continue;
                     }
+
+                    string activeCell = gameMatrix[cell.Row, cell.Col];
+
+                    if (activeCell == ".")
+                    {
+                        InvalidMove();
+                        continue;
+                    }
+
+                    RemoveAllBaloons(cell.Row, cell.Col, activeCell);
+                    userMoves++;
 
                     ClearEmptyCells();
                     ConsoleRenderer.PrintGameMatrix(gameMatrix);
@@ -216,11 +216,6 @@ namespace BaloonsPop
 
                 collumnFallDown.Clear();
             }
-        }
-
-        private bool IsFinished()
-        {
-            return (cellsLeft == 0);
         }
     }
 }
