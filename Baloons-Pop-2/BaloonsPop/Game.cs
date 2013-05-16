@@ -10,11 +10,8 @@ namespace BaloonsPop
     {
         private const int ROWS_COUNT = 5;
         private const int COLS_COUNT = 10;
-
-        private int cellsLeft = ROWS_COUNT * COLS_COUNT;
-        private int userMoves = 0;
-        private int clearedCells = 0;
-
+        private int cellsLeft;
+        private int userMoves;
         private string[,] gameMatrix;
         private Statistics stats;
 
@@ -24,7 +21,7 @@ namespace BaloonsPop
             Run();
         }
 
-        public string[,] CreateGameMatrix(int rows, int cols)
+        private string[,] CreateGameMatrix(int rows, int cols)
         {
             string[,] matrix = new string[rows, cols];
 
@@ -53,8 +50,8 @@ namespace BaloonsPop
         {
             Console.WriteLine("Good Bye!");
             Thread.Sleep(1000);
-            Console.WriteLine(userMoves.ToString());
-            Console.WriteLine(cellsLeft.ToString());
+            Console.WriteLine(userMoves);
+            Console.WriteLine(cellsLeft);
             Environment.Exit(0);
         }
 
@@ -63,18 +60,9 @@ namespace BaloonsPop
             cellsLeft = ROWS_COUNT * COLS_COUNT;
             stats = new Statistics();
             userMoves = 0;
-            clearedCells = 0;
             gameMatrix = CreateGameMatrix(ROWS_COUNT, COLS_COUNT);
-            //userInput.Clear();
             ConsoleRenderer.PrintGreetingMessage();
             ConsoleRenderer.PrintGameMatrix(gameMatrix);
-        }
-
-        private string ReadInput(string message)
-        {
-            Console.Write(message);
-            string input = Console.ReadLine();
-            return input;
         }
 
         private Cell ParseInputString(string input)
@@ -88,104 +76,105 @@ namespace BaloonsPop
             return cell;
         }
 
-        private void Run()
+        private void EndGame()
         {
-            while (true)
-            {
-                string userInputString;
-
-                if (cellsLeft != 0)
-                {
-                    userInputString = ReadInput("Enter a row and column: ");
-                }
-                else
-                {
-                    userInputString = ReadInput("Congratulations! You popped all balloons in " + userMoves + " moves." +
+            Console.Write("Congratulations! You popped all balloons in " + userMoves + " moves." +
                               "\r\nPlease enter your name for the top scoreboard:");
-                    stats.AddPlayer(userInputString, userMoves);
-                    Console.WriteLine(stats.ToString());
-                    Start();
-                }
-
-                if (userInputString == string.Empty)
-                {
-                    InvalidInput();
-                }
-                else if (userInputString == "top")
-                {
-                    Console.WriteLine(stats.ToString());
-                }
-                else if (userInputString == "restart")
-                {
-                    Reset();
-                }
-                else if (userInputString == "exit")
-                {
-                    Exit();
-                }
-                else
-                {
-                    Cell cell = new Cell();
-                    try
-                    {
-                        cell = ParseInputString(userInputString);
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-                        InvalidInput();
-                        continue;
-                    }
-                    catch (FormatException)
-                    {
-                        InvalidInput();
-                        continue;
-                    }
-
-                    if (cell.Row < 0 || cell.Row > ROWS_COUNT - 1 ||
-                        cell.Col < 0 || cell.Col > COLS_COUNT - 1)
-                    {
-                        InvalidMove();
-                        continue;
-                    }
-
-                    string activeCell = gameMatrix[cell.Row, cell.Col];
-
-                    if (activeCell == ".")
-                    {
-                        InvalidMove();
-                        continue;
-                    }
-
-                    RemoveAllBaloons(cell.Row, cell.Col, activeCell);
-                    userMoves++;
-
-                    ClearEmptyCells();
-                    ConsoleRenderer.PrintGameMatrix(gameMatrix);
-                }
-            }
+            string input = Console.ReadLine();
+            stats.AddPlayer(input, userMoves);
+            Console.WriteLine(stats.ToString());
+            Start();
         }
 
-        private void RemoveAllBaloons(int row, int col, string activeCell)
+        private void NextMove(string userInputString)
         {
-            if ((row >= 0) && (row <= 4) && (col <= 9) && (col >= 0) && (gameMatrix[row, col] == activeCell))
+            Cell cell = new Cell();
+            try
+            {
+                cell = ParseInputString(userInputString);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                InvalidInput();
+                return;
+            }
+            catch (FormatException)
+            {
+                InvalidInput();
+                return;
+            }
+
+            if (cell.Row < 0 || cell.Row >= ROWS_COUNT ||
+                cell.Col < 0 || cell.Col >= COLS_COUNT)
+            {
+                InvalidMove();
+                return;
+            }
+
+            string activeCell = gameMatrix[cell.Row, cell.Col];
+
+            if (activeCell == ".")
+            {
+                InvalidMove();
+                return;
+            }
+
+            RemoveAllBaloons(cell.Row, cell.Col, activeCell);
+            ClearEmptyCells();
+            ConsoleRenderer.PrintGameMatrix(gameMatrix);
+
+            userMoves++;
+        }
+
+        private void Run()
+        {
+            while (cellsLeft != 0)
+            {
+                Console.Write("Enter a row and column: ");
+
+                string userInputString = Console.ReadLine();
+                switch (userInputString)
+                {
+                    case "":
+                        InvalidInput();
+                        break;
+
+                    case "top":
+                        Console.WriteLine(stats.ToString());
+                        break;
+
+                    case "restart":
+                        Reset();
+                        break;
+
+                    case "exit":
+                        Exit();
+                        break;
+
+                    default:
+                        NextMove(userInputString);
+                        break;
+                }
+            }
+
+            EndGame();
+        }
+
+        private void RemoveAllBaloons(int row, int col, string color)
+        {
+            bool isInMatrix = (row >= 0) && (row <= ROWS_COUNT - 1) && (col <= COLS_COUNT - 1 ) && (col >= 0);
+            if (isInMatrix && gameMatrix[row, col] == color)
             {
                 gameMatrix[row, col] = ".";
-                clearedCells++;
+                cellsLeft--;
                 //Up
-                RemoveAllBaloons(row - 1, col, activeCell);
+                RemoveAllBaloons(row - 1, col, color);
                 //Down
-                RemoveAllBaloons(row + 1, col, activeCell);
+                RemoveAllBaloons(row + 1, col, color);
                 //Left
-                RemoveAllBaloons(row, col + 1, activeCell);
+                RemoveAllBaloons(row, col + 1, color);
                 //Right
-                RemoveAllBaloons(row, col - 1, activeCell);
-            }
-            else
-            {
-                cellsLeft -= clearedCells;
-                clearedCells = 0;
-
-                return;
+                RemoveAllBaloons(row, col - 1, color);
             }
         }
 
