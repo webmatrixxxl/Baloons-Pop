@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaloonsPop
 {
-    class ConsoleRenderer
+    public class ConsoleRenderer
     {
         public static void PrintGameMatrix(string[,] gameMatrix)
         {
