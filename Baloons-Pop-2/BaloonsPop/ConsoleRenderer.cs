@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BaloonsPop
 {
-    public class ConsoleRenderer
+    class ConsoleRenderer
     {
         public static void PrintGameMatrix(string[,] gameMatrix)
         {
